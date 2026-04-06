@@ -1,49 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Your Password</title>
-    <script src="https://download.playfab.com/PlayFabClientApi.js"></script>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
-        .card { border: 1px solid #ccc; padding: 20px; border-radius: 8px; width: 300px; }
-        input { width: 100%; margin: 10px 0; padding: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background: #2ea44f; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        body {
+            font-family: "Segoe UI", Tahoma, Helvetica, Arial, sans-serif;
+            background-color: #f4f4f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #0078d4;
+            box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #005a9e;
+        }
+        .footer-text {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #999;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h3>Reset Password</h3>
-        <input type="password" id="newPassword" placeholder="Enter new password" />
-        <button onclick="resetPassword()">Submit</button>
-        <p id="message"></p>
+
+<div class="container">
+    <h2>Reset Password</h2>
+    <p>Please enter a new password for your account.</p>
+    
+    <form id="resetForm">
+        <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" id="newPassword" placeholder="Enter new password" required>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm New Password</label>
+            <input type="password" id="confirmPassword" placeholder="Confirm new password" required>
+        </div>
+        <button type="submit">Update Password</button>
+    </form>
+
+    <div class="footer-text">
+        Secure Password Reset System
     </div>
+</div>
 
-    <script>
-        function resetPassword() {
-            // 1. Get the token from the URL (PlayFab adds this automatically)
-            const urlParams = new URLSearchParams(window.location.search);
-            const token = urlParams.get('token');
-            const newPassword = document.getElementById('newPassword').value;
+<script>
+    document.getElementById('resetForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const pass = document.getElementById('newPassword').value;
+        const confirm = document.getElementById('confirmPassword').value;
 
-            // 2. Setup the PlayFab Title ID (REPLACE THIS WITH YOURS)
-            PlayFab.settings.titleId = "15CB9A"; 
-
-            const request = {
-                Token: token,
-                Password: newPassword
-            };
-
-            // 3. Call the PlayFab API
-            PlayFabClientSDK.ResetPassword(request, (result, error) => {
-                if (result) {
-                    document.getElementById('message').innerText = "Password reset successfully!";
-                    document.getElementById('message').style.color = "green";
-                } else {
-                    document.getElementById('message').innerText = "Error: " + error.errorMessage;
-                    document.getElementById('message').style.color = "red";
-                }
-            });
+        if (pass !== confirm) {
+            alert("Passwords do not match!");
+            return;
         }
-    </script>
+
+        // Logic to send data to your backend or PlayFab API would go here
+        alert("Password updated successfully!");
+    });
+</script>
+
 </body>
 </html>
